@@ -68,9 +68,17 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y docker-compose
-    - name: list everything in directory
-      run: ls -l
+    - name: List everything in the root directory
+      if: always()
+      run: ls -l /
+    - name: List everything in the home directory
+      if: always()
+      run: ls -l ~
+    - name: List everything in the GitHub workspace directory
+      if: always()
+      run: ls -l ${{ github.workspace }}
     - name: Run docker compose from directory containing docker-compose.yml
+      working-directory: ${{ github.workspace }}
       run: |
         docker-compose up --build -d
     - name: Wait for services to start
