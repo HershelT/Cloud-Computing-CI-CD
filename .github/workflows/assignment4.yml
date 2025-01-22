@@ -14,15 +14,15 @@ jobs:
     - name: Build and export the stocks image
       uses: docker/build-push-action@v5
       with:
-        context: .
-        file: stocks/Dockerfile
+        context: stocks
+        file: Dockerfile
         tags: stocks:latest, ${{ secrets.DOCKER_COURSE_USERNAME }}/stocks:latest
         outputs: type=docker,dest=/tmp/stocks.tar
     - name: Build and export the capital gains image
       uses: docker/build-push-action@v5
       with:
-        context: .
-        file: capital-gains/Dockerfile
+        context: capital-gains
+        file: Dockerfile
         tags: capital-gains:latest, ${{ secrets.DOCKER_COURSE_USERNAME }}/capital-gains:latest
         outputs: type=docker,dest=/tmp/capital-gains.tar
 
