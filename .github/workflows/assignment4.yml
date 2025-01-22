@@ -71,8 +71,8 @@ jobs:
     - name: Go to root directory
       run: cd ..
     - name: list files
-      run: ls -l
-    - name: Run docker compose
+      run: ls 
+    - name: Run docker compose from directory containing docker-compose.yml
       run: |
         docker-compose up --build -d
     - name: Wait for services to start
