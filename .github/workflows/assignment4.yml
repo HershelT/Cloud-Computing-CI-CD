@@ -71,6 +71,9 @@ jobs:
     - name: List everything in the root directory
       if: always()
       run: ls -l /
+    - name: List everything in the root directory/tmp
+      if: always()
+      run: ls -l /tmp
     - name: List everything in the home directory
       if: always()
       run: ls -l ~
