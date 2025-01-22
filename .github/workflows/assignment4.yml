@@ -68,10 +68,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y docker-compose
-    - name: Go to root directory
-      run: cd ..
-    - name: list files
-      run: ls 
+    - name: list everything in directory
+      run: ls -l
     - name: Run docker compose from directory containing docker-compose.yml
       run: |
         docker-compose up --build -d
