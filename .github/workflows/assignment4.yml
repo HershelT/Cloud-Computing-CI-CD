@@ -71,29 +71,17 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y docker-compose
     - name: List everything in the root directory
-      if: always()
-      run: ls -l /
-    - name: List everything in the root directory/tmp
-      if: always()
-      run: ls -l /tmp
-    - name: List everything in the home directory
-      if: always()
-      run: ls -l ~
-    - name: List everything in the GitHub workspace directory
-      if: always()
-      run: ls -l ${{ github.workspace }}
+      run: ls -l 
     - name: Run docker compose from directory containing docker-compose.yml
-      working-directory: ${{ github.workspace }}
+      # working-directory: ${{ github.workspace }}
       run: |
         docker-compose up --build -d
     - name: Wait for services to start
       run: |
         echo "Waiting for services to start"
-        sleep 10
+        sleep 20
     - name: check container is running
       run: docker ps
-    - name: Checkout
-      uses: actions/checkout@v4
     - name: Set up python
       uses: actions/setup-python@v4
     - name: Install dependencies for pip, then instal pytest, and requests
@@ -108,6 +96,9 @@ jobs:
       run: |
         cd tests
         pytest -v assn4_test.py > assn4_test_results.txt
+    - name: see all the requests to my stocks volumes
+      run: |
+        docker logs stocks
     - name: upload test results
       if: always()
       uses: actions/upload-artifact@v4
