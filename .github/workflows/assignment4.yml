@@ -98,9 +98,8 @@ jobs:
       run: |
         cd tests
         pytest -v assn4_test.py > assn4_test_results.txt
-    - name: see all the requests to my stocks volumes
-      run: |
-        docker logs stocks
+    # - name: see all the get, post, etc requests to my server
+    #   run: |
     - name: upload test results
       if: always()
       uses: actions/upload-artifact@v4

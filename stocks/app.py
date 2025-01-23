@@ -6,9 +6,10 @@ from datetime import datetime
 import os
 
 # Fetch the api key from github secrets
-KEY = os.getenv('API_KEY')
-# from APIKEY import KEY
-
+KEY = os.getenv('API_KEY', None)
+# # If key is empty fetch from my.gitignore APIKEY.py fike
+# if KEY == None:
+#     from APIKEY import KEY
 
 
 app = Flask(__name__)
