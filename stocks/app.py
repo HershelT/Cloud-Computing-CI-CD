@@ -3,11 +3,13 @@ from pymongo import MongoClient
 import requests
 from bson import ObjectId
 from datetime import datetime
-
-
-from APIKEY import KEY
-
 import os
+
+# Fetch the api key from github secrets
+KEY = os.getenv('API_KEY')
+# from APIKEY import KEY
+
+
 
 app = Flask(__name__)
 

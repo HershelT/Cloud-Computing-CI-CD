@@ -14,6 +14,7 @@ services:
       - "8000"
     environment:
       - COLLECTION_NAME=stocks
+      - API_KEY=${API_KEY}
     depends_on:
       - mongodb
     restart: always

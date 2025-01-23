@@ -76,10 +76,12 @@ jobs:
       # working-directory: ${{ github.workspace }}
       run: |
         docker-compose up --build -d
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
     - name: Wait for services to start
       run: |
         echo "Waiting for services to start"
-        sleep 20
+        sleep 10
     - name: check container is running
       run: docker ps
     - name: Set up python
