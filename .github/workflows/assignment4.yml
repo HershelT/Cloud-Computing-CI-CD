@@ -52,7 +52,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: logs
+        name: logs-tmp
         path: logs/log.txt
 # JOB 2:  It uses the stocks and capital gains images 
 # from the first job and a MongoDB image. Docker Compose builds and runs the 
@@ -68,7 +68,7 @@ jobs:
     - name: download and load the logs/log.txt file to the logs/log.txt directory in the runner
       uses: actions/download-artifact@v4
       with:
-        name: logs    
+        name: logs-tmp    
         path: logs
     - name: verify logs/log.txt file is downloaded
       run: ls -l logs
