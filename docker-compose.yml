@@ -7,7 +7,7 @@ services:
       - mongo-data:/data/db
     restart: always
   stocks:
-    build: stocks:latest
+    image: stocks:latest
     ports: 
       - "5001:8000" #Host Port:Container Port
     expose:
@@ -19,7 +19,7 @@ services:
       - mongodb
     restart: always
   capital-gains:
-    build: capital-gains:latest
+    image: capital-gains:latest
     ports: 
       - "5003:8080"
     expose:

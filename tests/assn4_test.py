@@ -64,8 +64,8 @@ def test_1():
     assert stock1_result[0]['id'] != stock2_result[0]['id']
     assert stock1_result[0]['id'] != stock3_result[0]['id']
     assert stock2_result[0]['id'] != stock3_result[0]['id']
-    # set global_id to stock1 id
-    global_id = stock1_result[0]['id']
+    # add all three ids to a global list
+    global_id = [stock1_result[0]['id'], stock2_result[0]['id'], stock3_result[0]['id']]
 
 def test_2():
     # Execute a get stocks/id request for stock1
