@@ -69,8 +69,9 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: logs    
+        path: logs
     - name: verify logs/log.txt file is downloaded
-      run: ls -l /logs
+      run: ls -l logs
     - name: download stocks image
       uses: actions/download-artifact@v4
       with:
