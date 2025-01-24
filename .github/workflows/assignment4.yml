@@ -129,6 +129,7 @@ jobs:
         cd tests
         pytest -v assn4_test.py > assn4_test_results.txt
     - name: log if tests are successful
+      if: always()
       run: |
         if [ $(cat tests/assn4_test_results.txt | grep -c "failed") -eq 0 ]; then
           echo "tests succeeded" >> logs/log.txt
