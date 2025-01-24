@@ -65,6 +65,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: download and load the logs/log.txt file to the logs/log.txt directory in the runner
+      uses: actions/download-artifact@v4
+      with:
+        name: logs    
+    - name: verify logs/log.txt file is downloaded
+      run: ls -l /logs
     - name: download stocks image
       uses: actions/download-artifact@v4
       with:
@@ -134,3 +140,9 @@ jobs:
       with:
         name: GH_test_results
         path: tests/assn4_test_results.txt
+    - name: upload logs/log.txt
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: logs
+        path: logs/log.txt
