@@ -69,7 +69,7 @@ def test_1():
 
 def test_2():
     # Execute a get stocks/id request for stock1
-    stock1_get = get_stock(global_id)
+    stock1_get = get_stock(global_id[0])
     # Check if the status code is 200
     assert stock1_get[1] == 200
     # Check if the stock symbol is NVDA
