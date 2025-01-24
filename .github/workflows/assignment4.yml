@@ -9,7 +9,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Get Date, and add it to logs/log.txt file
-      run: echo $(date - Iminutes) >> logs/log.txt
+      run: echo $(date -Iminutes) >> logs/log.txt
     - name: Add name of sumbitter to logs/log.txt file
       run: echo 'Hershel Thomas' >> logs/log.txt
     - name: Set up Docker Buildx
@@ -89,16 +89,22 @@ jobs:
         sudo apt-get install -y docker-compose
     - name: List everything in the root directory
       run: ls -l 
-    - name: Run docker compose from directory containing docker-compose.yml
-      # working-directory: ${{ github.workspace }}
+    - name: Run docker compose
       run: |
-        docker-compose up --build -d
+        docker-compose up -d
       env:
         API_KEY: ${{ secrets.API_KEY }}
     - name: Wait for services to start
       run: |
         echo "Waiting for services to start"
         sleep 10
+    - name: check if both containers are succesfully started, add to logs/log.txt
+      run: |
+        if [ $(docker ps | grep -c "stocks") -eq 1 ] && [ $(docker ps | grep -c "capital-gains") -eq 1 ]; then
+          echo "Containers up and running" >> logs/log.txt
+        else
+          echo "Containers failed to run" >> logs/log.txt
+        fi
     - name: check container is running
       run: docker ps
     - name: Set up python
@@ -115,8 +121,13 @@ jobs:
       run: |
         cd tests
         pytest -v assn4_test.py > assn4_test_results.txt
-    # - name: see all the get, post, etc requests to my server
-    #   run: |
+    - name: log if tests are successful
+      run: |
+        if [ $(cat tests/assn4_test_results.txt | grep -c "failed") -eq 0 ]; then
+          echo "tests succeeded" >> logs/log.txt
+        else
+          echo "tests failed" >> logs/log.txt
+        fi
     - name: upload test results
       if: always()
       uses: actions/upload-artifact@v4
