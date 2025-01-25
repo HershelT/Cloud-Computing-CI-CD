@@ -55,11 +55,18 @@ def get_all_ids():
     global_id = [stock['id'] for stock in all_stocks]
     return global_id
 
-global global_id
-global_id = []
-stock_value = []
+# Ficture to store global_id
+@pytest.fixture(scope='module')
+def global_id():
+    global_id = []
+    yield global_id
+# Ficture to store stock values
+@pytest.fixture(scope='module')
+def stock_value():
+    stock_value = []
+    yield stock_value
 
-def test_1():
+def test_1(global_id):
     # Execute three post requests on stock1-3
     stock1_result = post_stock(stock1)
     stock2_result = post_stock(stock2)
@@ -73,9 +80,9 @@ def test_1():
     assert stock1_result[0]['id'] != stock3_result[0]['id']
     assert stock2_result[0]['id'] != stock3_result[0]['id']
     # add all three ids to a global list
-    global_id = [stock1_result[0]['id'], stock2_result[0]['id'], stock3_result[0]['id']]
+    global_id.extend([stock1_result[0]['id'], stock2_result[0]['id'], stock3_result[0]['id']])
 
-def test_2():
+def test_2(global_id):
     # Execute a get stocks/id request for stock1
     stock1_get = get_stock(global_id[0])
     # Check if the status code is 200
@@ -90,9 +97,8 @@ def test_3():
     assert all_stocks[1] == 200
     # Check if the length of the list is 3
     assert len(all_stocks[0]) == 3
-    # store all three ids in a list
-    global_id = [stock['id'] for stock in all_stocks[0]]
-def test_4():
+
+def test_4(global_id, stock_value):
     symbol_fields = ['NVDA', 'AAPL', 'GOOG']
     # execute 3 stock get requests for the three ids of stock1-3
     for id in global_id:
@@ -104,7 +110,7 @@ def test_4():
         # Store all three stock values in a list
         stock_value.append(stock[0]['stock value'])
 
-def test_5():
+def test_5(stock_value):
     # Execute a get portfolio value request
     portfolio_value = requests.get(STOCKS_URL + 'portfolio-value')
     # Check if the status code is 200
@@ -120,13 +126,13 @@ def test_6():
     # Is succesful if status code is 400 (symbol not provided)
     assert stock7_result[1] == 400
 
-def test_7():
+def test_7(global_id):
     # Delete stock2 
     del_status = delete_stock(global_id[1])
     # Check if the status code is 204
     assert del_status == 204
 
-def test_8():
+def test_8(global_id):
     # Execute a get request for stock2
     stock2_get = get_stock(global_id[1])
     # Check if the status code is 404
@@ -138,95 +144,6 @@ def test_9():
     # Is succesful if status code is 400 (purchase date format)
     assert stock8_result[1] == 400
 
-
-
-
-
-
-
-
-
-
-
-
-# # post stock and get it
-# def test_post_get():
-#     # Delete all stocks
-#     delete_all()
-#     # Post Google Stock
-#     post_result = post_stock(google_stock)
-#     # Test if the stock was posted
-#     assert post_result[1] == 201
-#     # Get the id of the stock  
-#     id = post_result[0]['id']
-#     # Get all stocks
-#     get_result = get_stocks()
-#     # Check if the get request was successful
-#     assert get_result[1] == 200
-#     # Get all stocks
-#     all_stocks = get_result[0]
-#     # Check if the stock is in the list
-#     for stock in all_stocks:
-#         if stock['id'] == id:
-#             assert stock["symbol"] == google_stock["symbol"]
-#     # Attempt to post same stock symbol again
-#     post_status = post_stock(google_stock)
-#     assert post_status[1] == 400
-
-# def test_put():
-#     # Replace the google stock with tesla
-#     id = get_stocks()[0][0]['id']
-#     put_status = put_stock(tesla_stock, id)
-#     # print this log
-#     assert put_status[1] == 200
-#     # Ensure id is the same
-#     assert put_status[0]['id'] == id
-#     # Get Stocks and ensure the new symbol is tesla symbol
-#     for stock in get_stocks()[0]:
-#         if stock['id'] == 3:
-#             assert stock['symbol'] == tesla_stock['symbol']
-#     # Attempt to put stock with invalid id
-#     put_status = put_stock(tesla_stock, '123')
-#     assert put_status[1] == 404
-
-# def test_del_stock():
-#     id = get_stocks()[0][0]['id']
-#     del_status = requests.delete(STOCKS_URL + 'stocks/' + id)
-#     assert del_status.status_code == 204
-
-
-# def test_stock_value():
-#     google = post_stock(google_stock)
-#     apple = post_stock(apple_stock)
-#     nvidia = post_stock(nvidia_stock)
-
-#     # Get the stock value of google
-#     value_status = requests.get(STOCKS_URL + 'stock-value/' + google[0]['id'])
-#     assert value_status.status_code == 200
-#     # Get the stock value of apple
-#     value_status = requests.get(STOCKS_URL + 'stock-value/' + apple[0]['id'])
-#     assert value_status.status_code == 200
-#     # Get the stock value of nvidia
-#     value_status = requests.get(STOCKS_URL + 'stock-value/' + nvidia[0]['id'])
-#     assert value_status.status_code == 200
-
-#     # Assert that the value are over 0
-#     assert value_status.json()['stock value'] > 0
-
-# def test_portfolio_value():
-#     # get portfolio value
-#     value = requests.get(STOCKS_URL + 'portfolio-value')
-#     assert value.status_code == 200
-#     # Assert total value is greater than 200
-#     assert value.json()['portfolio value'] > 1000
-
-# def test_capital_gains():
-#     # get capital gains
-#     gains = requests.get(CAPITAL_GAINS_URL + 'capital-gains')
-#     assert gains.status_code == 200
-#     # Assert total gains is greater than 200
-#     assert gains.json()['total gains'] > 200
-    
 
 # Run all tests
 if __name__ == "__main__":
