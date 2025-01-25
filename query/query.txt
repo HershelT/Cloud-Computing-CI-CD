@@ -1,0 +1,4 @@
+stocks:numsharesgt=10
+stocks:numshareslt=10
+capital-gains:numsharesgt=10
+capital-gains:numshareslt=10

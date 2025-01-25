@@ -152,3 +152,63 @@ jobs:
   # using docker compose up.  This time, instead of issuing tests using pytest, it will 
   # read instructions from a file to issue specific requests with query strings to the 
   # application and it records the results of these tests in a file. 
+  query:
+    # needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    # run application using docker compose like job 2 (tests)
+    - name: download stocks image
+      uses: actions/download-artifact@v4
+      with:
+        name: stocks-image
+        path: /tmp
+    - name: download capital-gains image
+      uses: actions/download-artifact@v4
+      with:
+        name: capital-gains-image
+        path: /tmp
+    - name: Verify downloaded images
+      run: ls -l /tmp
+    - name: Load stocks image
+      run: docker load --input /tmp/stocks.tar
+    - name: Load capital-gains image
+      run: docker load --input /tmp/capital-gains.tar
+    - name: Check images are loaded
+      run: docker image ls
+    - name: install docker compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+    - name: List everything in the root directory
+      run: ls -l 
+    - name: Run docker compose
+      run: |
+        docker-compose up -d
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+    - name: Wait for services to start
+      run: |
+        echo "Waiting for services to start"
+        sleep 10
+    - name: check container is running
+      run: docker ps
+    - name: Set up python
+      uses: actions/setup-python@v4
+    - name: Install dependencies for pip, then requests
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests  
+    - name: go into query directory and run the query_reader.py file
+      run: |
+        cd query
+        python query_reader.py
+    - name: upload query results from response.txt
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: GH_query_results
+        path: query/response.txt
+    
+      
