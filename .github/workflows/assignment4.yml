@@ -146,7 +146,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: logs
+        name: GH_logs
         path: logs/log.txt
   # JOB 3: The third job is called the query job.  Like the second job, it runs the application 
   # using docker compose up.  This time, instead of issuing tests using pytest, it will 
