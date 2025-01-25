@@ -35,6 +35,11 @@ def get_stocks():
     # assert response.status_code == 200
     return [response.json(), response.status_code]
 
+# Get stock-value of specific stock
+def get_stock_value(id):
+    response = requests.get(STOCKS_URL + 'stock-value/' + id)
+    return [response.json(), response.status_code]
+
 # Delete specific stock
 def delete_stock(id):
     response = requests.delete(STOCKS_URL + 'stocks/' + id)
@@ -102,7 +107,7 @@ def test_4(global_id, stock_value):
     symbol_fields = ['NVDA', 'AAPL', 'GOOG']
     # execute 3 stock get requests for the three ids of stock1-3
     for id in global_id:
-        stock = get_stock(id)
+        stock = get_stock_value(id)
         # Check if the status code is 200
         assert stock[1] == 200
         # Check if the symbol equals its corresponding symbol in symbol_fields
