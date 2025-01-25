@@ -153,7 +153,7 @@ jobs:
   # read instructions from a file to issue specific requests with query strings to the 
   # application and it records the results of these tests in a file. 
   query:
-    # needs: test
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
