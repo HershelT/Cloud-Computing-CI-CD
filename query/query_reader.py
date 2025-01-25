@@ -39,7 +39,7 @@ for line in query_lines:
         print(response.json())
         # Add qs: line to response.txt file
         with open('response.txt', 'a') as file:
-            file.write(f"qs: {line}")
+            file.write(f"qs: {line.strip()}\n")
             file.write(f"json: \n{response.json()}\n")
     # If line is of form "capital-gains:<qs>"
     elif "capital-gains:" in line:
@@ -51,6 +51,6 @@ for line in query_lines:
         print(response.json())
         # Add qs: line to response.txt file
         with open('response.txt', 'a') as file:
-            file.write(f"qs: {line}")
+            file.write(f"qs: {line.strip()}\n")
             file.write(f"json: \n{response.json()}\n")
 
