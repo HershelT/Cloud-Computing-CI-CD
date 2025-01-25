@@ -48,7 +48,15 @@ def delete_all():
         response = requests.delete(STOCKS_URL + 'stocks/' + id)
         assert response.status_code == 204
 
-global_id = '' 
+# Get all ids of stocks
+def get_all_ids():
+    response = get_stocks()
+    all_stocks = response[0]
+    global_id = [stock['id'] for stock in all_stocks]
+    return global_id
+
+global global_id
+global_id = []
 stock_value = []
 
 def test_1():
