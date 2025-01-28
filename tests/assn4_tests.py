@@ -109,7 +109,7 @@ def test_4(global_id, stock_value):
     for id in global_id:
         stock = get_stock_value(id)
         # Check if the status code is 200
-        assert stock[1] == 204
+        assert stock[1] == 200
         # Check if the symbol equals its corresponding symbol in symbol_fields
         assert stock[0]['symbol'] == symbol_fields[global_id.index(id)]
         # Store all three stock values in a list
