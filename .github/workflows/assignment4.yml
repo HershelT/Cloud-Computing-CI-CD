@@ -33,9 +33,9 @@ jobs:
       if: always()
       run: |
         if [ -f /tmp/stocks.tar ] && [ -f /tmp/capital-gains.tar ]; then
-          echo "Images built successfully" >> logs/log.txt
+          echo "image successfully built" >> logs/log.txt
         else
-          echo "Images not built successfully" >> logs/log.txt
+          echo "“image not able to be built" >> logs/log.txt
         fi
     # Upload the stocks and capital gains images
     - name: Upload stocks image
