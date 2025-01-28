@@ -119,7 +119,7 @@ def test_5(stock_value):
     # Execute a get portfolio value request
     portfolio_value = requests.get(STOCKS_URL + 'portfolio-value')
     # Check if the status code is 200
-    assert portfolio_value.status_code == 200
+    assert portfolio_value.status_code == 202
     # Assert that portfolio value is within bounds
     total_value = sum(stock_value)
     assert portfolio_value.json()['portfolio value']*0.97 <= total_value 
