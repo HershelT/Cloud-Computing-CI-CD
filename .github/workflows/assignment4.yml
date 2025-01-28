@@ -106,12 +106,14 @@ jobs:
         echo "Waiting for services to start"
         sleep 10
     - name: check if both containers are succesfully started, add to logs/log.txt
+    # Check by seeing if the containers mongo, stocks, and capital-gains are up (it says Up in the STATUS column)
+    # Check to see if Up is in status collumn three times
       run: |
-        if [ $(docker ps | grep -c "stocks") -eq 1 ] && [ $(docker ps | grep -c "capital-gains") -eq 1 ]; then
-          echo "Containers up and running" >> logs/log.txt
+        if [ $(docker ps | grep -c "mongo.*Up") -eq 1 ] && [ $(docker ps | grep -c "stocks.*Up") -eq 1 ] && [ $(docker ps | grep -c "capital-gains.*Up") -eq 1 ]; then
+          echo "Container up and running" >> logs/log.txt
         else
-          echo "Containers failed to run" >> logs/log.txt
-        fi
+          echo "Container failed to run" >> logs/log.txt
+        fi        
     - name: check container is running
       run: docker ps
     - name: Set up python
