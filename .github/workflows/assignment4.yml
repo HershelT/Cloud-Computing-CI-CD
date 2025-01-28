@@ -127,7 +127,7 @@ jobs:
     - name: Run and store tests in assn4_test_results.txt
       run: |
         cd tests
-        pytest -v assn4_test.py > assn4_test_results.txt
+        pytest -v assn4_tests.py > assn4_test_results.txt
     - name: log if tests are successful
       if: always()
       run: |
