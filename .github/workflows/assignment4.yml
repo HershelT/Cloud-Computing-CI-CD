@@ -29,13 +29,15 @@ jobs:
         file: capital-gains/Dockerfile
         tags: capital-gains:latest, ${{ secrets.DOCKER_COURSE_USERNAME }}/capital-gains:latest
         outputs: type=docker,dest=/tmp/capital-gains.tar
-    - name: Check if images are built and saved, add to logs/log.txt
+    - name: Check if images are built and saved, add to logs/log.txt. Store logs-tmp or GH_logs in env
       if: always()
       run: |
         if [ -f /tmp/stocks.tar ] && [ -f /tmp/capital-gains.tar ]; then
           echo "image successfully built" >> logs/log.txt
+          echo "logs-tmp" >> $GITHUB_ENV
         else
-          echo "“image not able to be built" >> logs/log.txt
+          echo "image not able to be built" >> logs/log.txt
+          echo "GH_logs" >> $GITHUB_ENV
         fi
     # Upload the stocks and capital gains images
     - name: Upload stocks image
@@ -52,7 +54,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: logs-tmp
+        name: ${{ env.GH_logs }} #Sets final name of logs/log.txt artifact if this job fails
         path: logs/log.txt
 # JOB 2:  It uses the stocks and capital gains images 
 # from the first job and a MongoDB image. Docker Compose builds and runs the 

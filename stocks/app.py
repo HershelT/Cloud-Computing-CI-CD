@@ -4,12 +4,12 @@ import requests
 from bson import ObjectId
 from datetime import datetime
 import os
-
+from APIKEY import API_KEY
 # Fetch the api key from github secrets
-KEY = os.getenv('API_KEY', None)
-# # If key is empty fetch from my.gitignore APIKEY.py fike
-# if KEY == None:
-#     from APIKEY import KEY
+KEY = os.getenv('API_KEY')
+# If key is empty fetch from my.gitignore APIKEY.py fike
+if KEY == None or KEY == "":
+    KEY = API_KEY
 
 
 app = Flask(__name__)
