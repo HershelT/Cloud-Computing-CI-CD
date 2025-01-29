@@ -34,10 +34,10 @@ jobs:
       run: |
         if [ -f /tmp/stocks.tar ] && [ -f /tmp/capital-gains.tar ]; then
           echo "image successfully built" >> logs/log.txt
-          echo "logs-tmp" >> $GITHUB_ENV
+          echo "LOGNAME=logs-tmp" >> $GITHUB_ENV
         else
           echo "image not able to be built" >> logs/log.txt
-          echo "GH_logs" >> $GITHUB_ENV
+          echo "LOGNAME=GH_logs" >> $GITHUB_ENV
         fi
     # Upload the stocks and capital gains images
     - name: Upload stocks image
@@ -54,7 +54,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.GH_logs }} #Sets final name of logs/log.txt artifact if this job fails
+        name: ${{ env.LOGNAME }} #Sets final name of logs/log.txt artifact if this job fails
         path: logs/log.txt
 # JOB 2:  It uses the stocks and capital gains images 
 # from the first job and a MongoDB image. Docker Compose builds and runs the 
