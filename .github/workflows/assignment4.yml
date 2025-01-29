@@ -117,6 +117,8 @@ jobs:
           echo "Container up and running" >> logs/log.txt
         else
           echo "Container failed to run" >> logs/log.txt
+          # tell step that it failed
+          exit 1
         fi
     - name: check container is running
       run: docker ps
@@ -134,8 +136,7 @@ jobs:
       run: |
         cd tests
         pytest -v assn4_tests.py > assn4_test_results.txt
-    - name: log if tests are successful
-      if: always()
+    - name: log if tests are successful (only if container is up and running)
       run: |
         if [ $(cat tests/assn4_test_results.txt | grep -c "failed") -eq 0 ]; then
           echo "tests succeeded" >> logs/log.txt
