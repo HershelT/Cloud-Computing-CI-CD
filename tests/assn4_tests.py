@@ -51,7 +51,7 @@ def delete_all():
     for stock in response:
         id = stock['id']
         response = requests.delete(STOCKS_URL + 'stocks/' + id)
-        assert response.status_code == 204
+        assert response.status_code == 200
 
 # Get all ids of stocks
 def get_all_ids():
